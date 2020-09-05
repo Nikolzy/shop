@@ -43,6 +43,17 @@
         <v-toolbar-title>Application</v-toolbar-title>
       </div>
       <div>
+        <nuxt-link to="basket" class="nav-item">
+          <v-badge
+          :content="productsAmount"
+          :value="productsAmount"
+          :key="productsAmount"
+          color="red"
+          overlap
+          >
+            <v-icon>mdi-basket</v-icon>
+          </v-badge>
+        </nuxt-link>
         <nuxt-link to="profile" class="nav-item">
           <v-icon>mdi-account</v-icon>
         </nuxt-link>
@@ -61,10 +72,15 @@
       source: String,
     },
     data: () => ({
-      drawer: null,
+      drawer: null
     }),
     created () {
       this.$vuetify.theme.dark = false;
+    },
+    computed: {
+      productsAmount() {
+        return this.$store.getters['cart/getProductsAmount'];
+      }
     },
     methods: {
       handleRouter (path) {
