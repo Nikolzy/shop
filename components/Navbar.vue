@@ -1,0 +1,93 @@
+<template>
+  <div>
+    <v-navigation-drawer
+      v-model="drawer"
+      color="#DCEDC8"
+      app
+      clipped
+    >
+      <v-list
+        class="navbar"
+        dense>
+        <v-list-item link @click="handleRouter('/products')">
+          <v-list-item-action>
+            <v-icon>mdi-shopping</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <v-list-item-title>
+              Зробити замовлення
+            </v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="handleRouter('/history')">
+          <v-list-item-action>
+            <v-icon>mdi-history</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <nuxt-link to="/history">
+              <v-list-item-title>
+                Історія замовлень
+              </v-list-item-title>
+            </nuxt-link>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-navigation-drawer>
+    <v-app-bar
+      app
+      clipped-left
+      color="#9CCC65"
+    >
+      <div class="d-flex align-center">
+        <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
+        <v-toolbar-title>Application</v-toolbar-title>
+      </div>
+      <div>
+        <nuxt-link to="profile" class="nav-item">
+          <v-icon>mdi-account</v-icon>
+        </nuxt-link>
+        <nuxt-link to="logout" class="nav-item">
+          <v-icon>mdi-logout</v-icon>
+        </nuxt-link>
+      </div>
+    </v-app-bar>
+  </div>
+</template>
+
+<script>
+  export default {
+    name: 'Navbar',
+    props: {
+      source: String,
+    },
+    data: () => ({
+      drawer: null,
+    }),
+    created () {
+      this.$vuetify.theme.dark = false;
+    },
+    methods: {
+      handleRouter (path) {
+        this.$router.push(path);
+      }
+    }
+  }
+</script>
+
+<style lang="scss">
+  .navbar {
+    .v-list-item__title {
+      color: rgba(0, 0, 0, 0.87);
+    }
+  }
+  .v-toolbar__content {
+    width: 100%;
+    justify-content: space-between;
+  }
+  .nav-item:not(:last-child) {
+    margin-right: 10px;
+  }
+  a {
+    text-decoration: none;
+  }
+</style>
