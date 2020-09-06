@@ -14,18 +14,25 @@
         type="basket"
       />
     </div>
-    <div>
-      <v-btn color="green" @click="confirmOrder">Замовити</v-btn>
+    <div v-if="price">
+      <pop-confirm-button
+        button-color="green"
+        button-label="Замовити"
+        type="text"
+        :message="message"
+        :action="confirmOrder"
+      />
     </div>
   </div>
 </template>
 
 <script>
 import ProductCard from '@/components/Products/product-card';
+import PopConfirmButton from '@/components/common/PopConfirmButton'
 
 export default {
   name: 'basket',
-  components: { ProductCard },
+  components: { PopConfirmButton, ProductCard },
   data: () => ({
     price: 0,
     updated: false
@@ -42,6 +49,9 @@ export default {
     },
     productsAmount() {
       return this.$store.getters['cart/getProductsAmount'];
+    },
+    message() {
+      return 'Ви підтверджуєте замовлення?';
     }
   },
   watch: {

@@ -7,20 +7,27 @@
               <v-img :src="`/product_images/${item.imageURL}`" style="max-width: 400px; width: 100%"></v-img>
             </div>
           </v-card-text>
-          <v-card-subtitle class="card-subtitle">Властивості</v-card-subtitle>
-          <v-card-text class="d-flex flex-column align-center">
+          <v-card-subtitle class="card-subtitle" v-if="type === 'shop'">Властивості</v-card-subtitle>
+          <v-card-text class="d-flex flex-column align-center" v-if="type === 'shop'">
             <div class="card-info">
               <div>{{ item.description }}</div><br>
             </div>
           </v-card-text>
           <v-card-actions class="actions d-flex flex-wrap">
-            <div>
+            <div class="price">
               <b>{{ item.price }} грн</b> / 100г
             </div>
             <div class="d-flex align-center">
               <v-text-field v-model="count" :disabled="showMessage && type === 'shop'" type="number" min="1"/>
               <v-btn v-if="!showMessage" color="green" @click="addToCart">До кошику</v-btn>
-              <v-btn v-else color="red" @click="removeFromCart"><v-icon>mdi-delete</v-icon></v-btn>
+              <pop-confirm-button
+                v-else
+                button-color="red"
+                :button-label="iconDelete"
+                :message="message"
+                :action="removeFromCart"
+                type="icon"
+              />
             </div>
           </v-card-actions>
           <v-alert v-if="showMessage && type === 'shop'" type="success">У кошику {{ count }}</v-alert>
@@ -29,7 +36,9 @@
 </template>
 
 <script>
+  import PopConfirmButton from '@/components/common/PopConfirmButton'
   export default {
+    components: { PopConfirmButton },
     props: {
       item: Object,
       type: String,
@@ -47,6 +56,12 @@
     computed: {
       showCard() {
         return this.type === 'shop' || (this.type === 'basket' && this.item.status === 'added');
+      },
+      iconDelete() {
+        return 'mdi-delete';
+      },
+      message() {
+        return 'Ви бажаєте видалити товар?';
       }
     },
     watch: {
@@ -118,6 +133,9 @@
         transition: all .3s linear;
       }
     }
+    .price {
+      margin: 0 10px;
+    }
   }
   .card-subtitle {
     font-weight: bold;
@@ -125,7 +143,6 @@
   }
   .card-info {
     width: 100%;
-    //min-height: 200px;
   }
 
   @media screen and (max-width: 500px){
