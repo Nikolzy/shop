@@ -31,6 +31,30 @@
             </nuxt-link>
           </v-list-item-content>
         </v-list-item>
+        <v-list-item link @click="handleRouter('/сontacts')">
+          <v-list-item-action>
+            <v-icon>mdi-account-box</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <nuxt-link to="/сontacts">
+              <v-list-item-title>
+                Контакти
+              </v-list-item-title>
+            </nuxt-link>
+          </v-list-item-content>
+        </v-list-item>
+        <v-list-item link @click="handleRouter('/delivery')">
+          <v-list-item-action>
+            <v-icon>mdi-truck-delivery</v-icon>
+          </v-list-item-action>
+          <v-list-item-content>
+            <nuxt-link to="/delivery">
+              <v-list-item-title>
+                Доставка
+              </v-list-item-title>
+            </nuxt-link>
+          </v-list-item-content>
+        </v-list-item>
       </v-list>
     </v-navigation-drawer>
     <v-app-bar
