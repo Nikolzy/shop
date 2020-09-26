@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profile">
     <h1>Мій профіль</h1>
     <v-form ref="form">
       <v-text-field
@@ -25,7 +25,7 @@
         :disabled="true"
         label="Пункт отримання товару"
       />
-      <div>
+      <div v-if="!user.deliveryAddress">
         <v-checkbox
           v-model="user.isOwnPickUp"
           class="mt-0"
@@ -72,3 +72,15 @@
     }
   }
 </script>
+
+<style scoped>
+  .profile {
+    width: 50%;
+    transition: all .3s linear;
+  }
+  @media screen and (max-width: 768px) {
+    .profile {
+      width: 100%;
+    }
+  }
+</style>

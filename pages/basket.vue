@@ -14,11 +14,22 @@
         type="basket"
       />
     </div>
-    <div v-if="price">
+    <v-alert v-if="price && !isUserValid" type="warning" class="d-flex">
+      <div class="mr-2 mb-2">Для того, щоб оформити замовлення, необхідно заповнити дані в профілі.</div>
+      <v-btn
+        @click="$router.push('/profile')"
+        color="green"
+        dark
+      >
+        Перейти
+      </v-btn>
+    </v-alert>
+    <div v-if="price && isUserValid">
       <pop-confirm-button
         button-color="green"
         button-label="Замовити"
         type="text"
+        :disabled="true"
         :message="message"
         :action="confirmOrder"
       />
@@ -52,6 +63,9 @@ export default {
     },
     message() {
       return 'Ви підтверджуєте замовлення?';
+    },
+    isUserValid() {
+      return this.$store.getters['user/getUserValid'];
     }
   },
   watch: {

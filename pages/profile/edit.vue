@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="profile">
     <h1>Мій профіль</h1>
     <v-form ref="form">
       <v-text-field
@@ -11,6 +11,7 @@
       <v-text-field
         v-model.trim="user.email"
         label="Email"
+        :validate-on-blur="true"
         :rules="[v => !!checkEmail(v) || 'Це поле є обов\'язковим']"
         required
       />
@@ -20,6 +21,7 @@
         type="number"
         :min="minNum"
         :max="maxNum"
+        :validate-on-blur="true"
         :rules="[v => checkPhoneNumber(v) || 'Введіть корректний мобільний номер']"
         required
       ></v-text-field>
@@ -59,7 +61,8 @@ export default {
       email: '',
       phone: '',
       deliveryAddress: null,
-      isOwnPickUp: false
+      isOwnPickUp: false,
+      isValid: false
     },
     message: 'Зберегти дані користувача?',
     address: [{
@@ -76,17 +79,15 @@ export default {
       value: 'silpoKoneva'
     }],
     minNum: 10,
-    maxNum: 12,
-    isEmailValid: false,
-    afterSent: false
+    maxNum: 12
   }),
   mounted() {
     this.user = { ...this.$store.getters['user/getUser'] };
   },
   methods: {
     updateUser () {
-      this.afterSent = true;
       if (this.validate()) {
+        this.user.isValid = true;
         if (this.user.isOwnPickUp) this.user.deliveryAddress = null;
         this.$store.commit('user/updateUserInfo', this.user);
         this.$router.push('/profile');
@@ -96,14 +97,14 @@ export default {
       const phoneLength = number.trim().length;
       const reg = /^[3][8]/;
       if (reg.test(number)) {
-        return this.afterSent ? phoneLength === this.maxNum : true;
+        return phoneLength === this.maxNum;
       } else {
-        return this.afterSent ? phoneLength === this.minNum : true;
+        return phoneLength === this.minNum;
       }
     },
     checkEmail (email) {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return this.afterSent ? regExp.test(email) : true;
+      return regExp.test(email);
     },
     checkAddress (address) {
       return !!(address || this.user.isOwnPickUp);
@@ -115,3 +116,15 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+  .profile {
+    width: 50%;
+    transition: all .3s linear;
+  }
+  @media screen and (max-width: 768px) {
+    .profile {
+      width: 100%;
+    }
+  }
+</style>

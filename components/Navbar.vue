@@ -31,7 +31,7 @@
             </nuxt-link>
           </v-list-item-content>
         </v-list-item>
-        <v-list-item link @click="handleRouter('/сontacts')">
+        <v-list-item link @click="handleRouter('/contacts')">
           <v-list-item-action>
             <v-icon>mdi-account-box</v-icon>
           </v-list-item-action>
