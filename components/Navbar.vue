@@ -67,7 +67,7 @@
         <v-toolbar-title>Application</v-toolbar-title>
       </div>
       <div>
-        <nuxt-link to="basket" class="nav-item">
+        <nuxt-link to="/basket" class="nav-item">
           <v-badge
           :content="productsAmount"
           :value="productsAmount"
@@ -78,10 +78,10 @@
             <v-icon>mdi-basket</v-icon>
           </v-badge>
         </nuxt-link>
-        <nuxt-link to="profile" class="nav-item">
+        <nuxt-link to="/profile" class="nav-item">
           <v-icon>mdi-account</v-icon>
         </nuxt-link>
-        <nuxt-link to="logout" class="nav-item">
+        <nuxt-link to="/logout" class="nav-item">
           <v-icon>mdi-logout</v-icon>
         </nuxt-link>
       </div>

@@ -1,5 +1,6 @@
 export const state = () => ({
   productsAmount: 0,
+  orders: [],
   cartItems: {},
   products: [{
     id: 1,
@@ -42,14 +43,16 @@ export const state = () => ({
 export const getters = {
   getProductsAmount: state => state.productsAmount,
   getCartItems: state => state.cartItems,
-  getProducts: state => state.products
+  getProducts: state => state.products,
+  getOrders: state => state.orders
 };
 
 export const mutations = {
   updateProductsAmount(state, payload) {
     state.cartItems[payload.id] = {
       count: +payload.count,
-      price: +payload.price
+      price: +payload.price,
+      title: state.products.find(e => e.id === payload.id).title
     };
     let count = 0;
     for (let key in state.cartItems) {
@@ -61,5 +64,10 @@ export const mutations = {
     const data = state.products.find(el => el.id === payload.id);
     data.count = +payload.count;
     data.status = payload.status;
+  },
+  setOrder (state) {
+    state.orders.push(state.cartItems);
+    state.productsAmount = 0;
+    state.cartItems = {};
   }
 };

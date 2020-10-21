@@ -38,35 +38,28 @@
 </template>
 
 <script>
-import ProductCard from '@/components/Products/product-card';
-import PopConfirmButton from '@/components/common/PopConfirmButton'
+import ProductCard from '~/components/Products/ProductCard';
+import PopConfirmButton from '@/components/common/PopConfirmButton';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'basket',
   components: { PopConfirmButton, ProductCard },
   data: () => ({
     price: 0,
-    updated: false
+    updated: false,
+    message: 'Ви підтверджуєте замовлення?'
   }),
   mounted() {
     this.calculatePrice();
   },
   computed: {
-    cartItems() {
-      return this.$store.getters['cart/getCartItems'];
-    },
-    products() {
-      return this.$store.getters['cart/getProducts'];
-    },
-    productsAmount() {
-      return this.$store.getters['cart/getProductsAmount'];
-    },
-    message() {
-      return 'Ви підтверджуєте замовлення?';
-    },
-    isUserValid() {
-      return this.$store.getters['user/getUserValid'];
-    }
+    ...mapGetters({
+      cartItems: 'cart/getCartItems',
+      products: 'cart/getProducts',
+      productsAmount: 'cart/getProductsAmount',
+      isUserValid: 'user/getUserValid'
+    })
   },
   watch: {
     productsAmount() {
@@ -88,7 +81,8 @@ export default {
       this.updated = !this.updated;
     },
     confirmOrder() {
-      console.log('confirm')
+      this.$store.commit('cart/setOrder');
+      this.$router.push('/history');
     }
   }
 }

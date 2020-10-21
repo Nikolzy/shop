@@ -129,12 +129,18 @@
     .v-image {
       .v-responsive__content {
         width: 400px !important;
-        height: 300px;
+        height: 300px !important;
         transition: all .3s linear;
+      }
+      &.v-responsive {
+        height: 300px;
       }
     }
     .price {
       margin: 0 10px;
+    }
+    .v-card__text {
+      min-height: 215px;
     }
   }
   .card-subtitle {
