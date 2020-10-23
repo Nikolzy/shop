@@ -67,7 +67,10 @@ export const mutations = {
   },
   setOrder (state) {
     state.orders.push(state.cartItems);
-    state.productsAmount = 0;
     state.cartItems = {};
+    state.productsAmount = 0;
+    state.products = state.products.map(el => ({
+      ...el, status: 'removed', count: 1
+    }))
   }
 };
