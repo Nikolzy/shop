@@ -1,16 +1,16 @@
 <template>
       <v-flex v-if="showCard" xs12 md6 lg6 col-xs-12 col-md-12 col-lg-6>
+        <ProductView
+          :dialog="dialog"
+          :description="item.description"
+          :type="type"
+          :handleClose="handleClose"
+        />
         <v-card class="card-item">
           <v-card-title>{{ item.title }}</v-card-title>
           <v-card-text class="d-flex flex-column align-center">
-            <div class="d-flex justify-center">
+            <div class="d-flex justify-center image" @click="dialog = true">
               <v-img :src="`/product_images/${item.imageURL}`" style="max-width: 400px; width: 100%"></v-img>
-            </div>
-          </v-card-text>
-          <v-card-subtitle class="card-subtitle" v-if="type === 'shop'">Властивості</v-card-subtitle>
-          <v-card-text class="d-flex flex-column align-center" v-if="type === 'shop'">
-            <div class="card-info">
-              <div>{{ item.description }}</div><br>
             </div>
           </v-card-text>
           <v-card-actions class="actions d-flex flex-wrap">
@@ -37,8 +37,9 @@
 
 <script>
   import PopConfirmButton from '@/components/common/PopConfirmButton'
+  import ProductView from '@/components/Products/ProductView'
   export default {
-    components: { PopConfirmButton },
+    components: { ProductView, PopConfirmButton },
     props: {
       item: Object,
       type: String,
@@ -47,7 +48,8 @@
     name: 'product-card',
     data: () => ({
       showMessage: false,
-      count: 0
+      count: 0,
+      dialog: false
     }),
     mounted() {
       this.showMessage = !!(this.item.count && this.item.status === 'added');
@@ -109,6 +111,9 @@
         if (this.type === 'basket') {
           this.updateComponent();
         }
+      },
+      handleClose () {
+        this.dialog = false;
       }
     }
   }
@@ -136,11 +141,16 @@
         height: 300px;
       }
     }
+    .image {
+      cursor: pointer;
+    }
     .price {
       margin: 0 10px;
     }
     .v-card__text {
-      min-height: 215px;
+      padding-top: 15px;
+      opacity: 1;
+      transition: opacity .3s linear;
     }
   }
   .card-subtitle {
@@ -175,4 +185,9 @@
       }
     }
   }
+
+  .v-card__text:hover {
+    opacity: 0.7;
+  }
+
 </style>
