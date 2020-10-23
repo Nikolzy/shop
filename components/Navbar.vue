@@ -81,7 +81,7 @@
         <nuxt-link to="/profile" class="nav-item">
           <v-icon>mdi-account</v-icon>
         </nuxt-link>
-        <nuxt-link to="/logout" class="nav-item">
+        <nuxt-link to="/login?message=logout" class="nav-item">
           <v-icon>mdi-logout</v-icon>
         </nuxt-link>
       </div>
