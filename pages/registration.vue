@@ -41,9 +41,6 @@
 </template>
 
 <script>
-import * as firebase from 'firebase/app'
-import 'firebase/auth'
-
 export default {
   name: 'Login',
   layout: 'empty',
@@ -54,12 +51,13 @@ export default {
   }),
   methods: {
     async registration () {
-      await firebase.auth().createUserWithEmailAndPassword(this.email, this.password).then((data) => {
-        console.log(data)
-        this.$router.push('/')
-      }).catch(e => {
-        console.log(e)
-      })
+      const data = {
+        email: this.email,
+        password: this.password,
+        name: this.name
+      }
+      await this.$store.dispatch('auth/register', data)
+      this.$router.push('/')
     }
   }
 }

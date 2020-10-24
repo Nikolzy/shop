@@ -36,7 +36,7 @@
             <v-icon>mdi-account-box</v-icon>
           </v-list-item-action>
           <v-list-item-content>
-            <nuxt-link to="/сontacts">
+            <nuxt-link to="/contacts">
               <v-list-item-title>
                 Контакти
               </v-list-item-title>
@@ -114,8 +114,8 @@
         this.$router.push(path);
       },
       logout () {
+        // Cookies.remove('ACCESS_TOKEN')
         firebase.auth().signOut().then(() => {
-          console.log('log out')
         })
       }
     }

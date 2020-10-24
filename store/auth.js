@@ -1,40 +1,34 @@
-import firebase from "firebase/app";
-// import 'firebase/auth'
+import * as firebase from "firebase/app";
+import 'firebase/auth'
+
 export const state = {
   user: {}
 }
-export const mutations = {
-  ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
-
-    const { uid, email, emailVerified } = authUser
-    // state.user = { uid, email, emailVerified }
-  }
-}
 export const actions = {
-  // onAuthStateChangedAction: (ctx, { authUser, claims }) => {
-  //   if (!authUser) {
-  //     // claims = null
-  //     // Perform logout operations
-  //   } else {
-  //     // Do something with the authUser and the claims object...
-  //   }
-  // }
-  async register({ dispatch, commit }, { email, password }) {
-    try {
-      console.log(email, password)
-      await firebase.auth().createUserWithEmailAndPassword(email, password);
-      const uid = await dispatch('getUid');
-      await firebase.database().ref(`/users/${uid}/info`).set({
-        bill: 100000,
-        email
+  async register({ dispatch, commit }, { email, password, name }) {
+    await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
+      const uid = firebase.auth().currentUser.uid;
+      firebase.database().ref(`/users/${uid}/info`).set({
+        name, email
       })
-    } catch (e) {
-      commit('setError', e)
-      throw e;
-    }
+      firebase.auth().currentUser.getIdToken(true).then((token) => {
+        document.cookie = `ACCESS_TOKEN=${token};`
+      })
+    }).catch(e => {
+      console.log(e)
+    })
+  },
+  async login ({ dispatch, commit }, { email, password }) {
+    await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
+      firebase.auth().currentUser.getIdToken(true).then((token) => {
+        document.cookie = `ACCESS_TOKEN=${token};`
+      })
+    }).catch(e => {
+      console.log(e)
+    })
   },
   getUid() {
     const user = firebase.auth().currentUser;
     return user ? user.uid : null;
-  }
+  },
 }
