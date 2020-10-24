@@ -7,10 +7,12 @@
           <v-form ref="form">
             <v-text-field
               v-model="email"
+              color="green"
               label="Емейл"
             ></v-text-field>
             <v-text-field
               v-model="password"
+              color="green"
               label="Пароль"
             ></v-text-field>
           </v-form>
