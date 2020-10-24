@@ -3,6 +3,7 @@
     <HistoryCardInner
       v-for="(order, i) in formattedOrders"
       :formatted-order="order"
+      :price="prices[i]"
       :index="i"
       class="history-card"
     />
@@ -22,7 +23,8 @@ export default  {
     }
   },
   data: () => ({
-    formattedOrders: []
+    formattedOrders: [],
+    prices: []
   }),
   mounted() {
     this.formatData();
@@ -37,7 +39,8 @@ export default  {
   },
   methods: {
     formatData () {
-      this.formattedOrders = this.orders.map(el => Object.entries(el).map(e => e[1]))
+      this.formattedOrders = this.orders.map(el => Object.entries(el.order).map(e => e[1]));
+      this.prices = this.orders.map(el => el.price);
     }
   }
 }

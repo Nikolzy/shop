@@ -14,13 +14,26 @@
               label="Пароль"
             ></v-text-field>
           </v-form>
-          <v-btn
-            color="green"
-            dark
-            @click="login"
-          >
-            Увійти
-          </v-btn>
+          <div>
+            <v-btn
+              color="green"
+              dark
+              rounded
+              @click="login"
+            >
+              Увійти
+            </v-btn>
+          </div>
+          <div class="d-flex justify-center mt-4">
+            <v-btn
+              color="primary"
+              text
+              rounded
+              @click="$router.push('/registration')"
+            >
+              Зареєструватись
+            </v-btn>
+          </div>
         </v-card-text>
       </v-card>
     </div>
@@ -28,33 +41,33 @@
 </template>
 
 <script>
+import * as firebase from 'firebase/app'
+import 'firebase/auth'
+
 export default {
   name: 'Login',
-  layout: 'login',
+  layout: 'empty',
   data: () => ({
     email: '',
     password: ''
   }),
   methods: {
-    login () {
-      this.$router.push('/')
+    async login () {
+      try {
+        await firebase.auth().signInWithEmailAndPassword(this.email, this.password).then((data) => {
+          console.log(data)
+          this.$router.push('/')
+        }).catch(e => {
+          console.log(e)
+        });
+      } catch (e) {
+        commit('setError', e)
+        throw e;
+      }
     }
+      // this.$store.dispatch('auth/register', data);
+      // this.$router.push('/')   }
   }
 }
 </script>
 
-<style>
-  .modal {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.8);
-  }
-  .login_wrapper {
-    position: absolute;
-    min-width: 400px;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-  }
-</style>

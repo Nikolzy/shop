@@ -10,6 +10,9 @@
         <div v-for="el in formattedOrder" class="history-card-info">
           <div v-if="el.count"><span>{{ el.title }}</span> x <span>{{ el.count }}</span></div>
         </div>
+        <div class="order_price">
+          Ціна: <b>{{ price }}</b> грн.
+        </div>
       </v-card-text>
     </v-card>
   </div>
@@ -28,7 +31,8 @@ export default  {
     index: {
       type: Number,
       required: true
-    }
+    },
+    price: Number
   }
 }
 </script>
@@ -41,5 +45,8 @@ export default  {
 .history-card-info {
   font-size: 13px;
   line-height: 1.3;
+}
+.order_price {
+  margin-top: 20px;
 }
 </style>

@@ -66,14 +66,14 @@ export const mutations = {
     data.status = payload.status;
   },
   setOrder (state) {
-    // const data = {};
-    // let price = 0;
-    // for (let key in state.cartItems) {
-    //   price += state.cartItems[key].price * state.cartItems[key].count;
-    // }
-    // data.order = state.cartItems;
-    // data.price = price;
-    state.orders.push(state.cartItems);
+    const data = {};
+    let price = 0;
+    for (let key in state.cartItems) {
+      price += state.cartItems[key].price * state.cartItems[key].count;
+    }
+    data.order = state.cartItems;
+    data.price = price;
+    state.orders.push(data);
     state.cartItems = {};
     state.productsAmount = 0;
     state.products = state.products.map(el => ({

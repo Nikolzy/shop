@@ -22,8 +22,12 @@
 
 <script>
   import Navbar from '../components/Navbar'
+  import * as firebase from 'firebase/app'
+  import 'firebase/auth'
+
   export default {
     components: { Navbar },
+    middleware: 'auth',
     props: {
       source: String,
     },
@@ -33,6 +37,17 @@
     created () {
       this.$vuetify.theme.dark = false;
     },
+    methods: {
+      setupFirebase () {
+        firebase.auth().onAuthStateChanged(user => {
+          if (user) {
+            console.log('loggedIn')
+          } else {
+            console.log('not logged in')
+          }
+        })
+      }
+    }
   }
 </script>
 

@@ -82,7 +82,7 @@
           <v-icon>mdi-account</v-icon>
         </nuxt-link>
         <nuxt-link to="/login?message=logout" class="nav-item">
-          <v-icon>mdi-logout</v-icon>
+          <v-icon @click="logout">mdi-logout</v-icon>
         </nuxt-link>
       </div>
     </v-app-bar>
@@ -90,6 +90,9 @@
 </template>
 
 <script>
+  import * as firebase from 'firebase/app'
+  import 'firebase/auth'
+
   export default {
     name: 'Navbar',
     props: {
@@ -109,6 +112,11 @@
     methods: {
       handleRouter (path) {
         this.$router.push(path);
+      },
+      logout () {
+        firebase.auth().signOut().then(() => {
+          console.log('log out')
+        })
       }
     }
   }
