@@ -1,3 +1,7 @@
+import * as firebase from 'firebase'
+import 'firebase/auth';
+import 'firebase/database'
+
 export const state = () => ({
   user: {
     name: '',
@@ -19,3 +23,27 @@ export const mutations = {
     state.user = payload;
   }
 };
+
+export const actions = {
+  async getUserInfo() {
+    try {
+      const uid = firebase.auth().currentUser.uid;
+      const info = (await firebase.database().ref(`/users/${uid}/info`).once('value')).val();
+      return info;
+    } catch (e) {
+      throw e;
+    }
+  },
+  async updateUserInfo ({ commit }, payload) {
+    try {
+      const { name, email, phone, deliveryAddress, isOwnPickUp, isValid } = payload;
+      const uid = firebase.auth().currentUser.uid;
+      firebase.database().ref(`/users/${uid}/info`).set({
+        name, email, phone, deliveryAddress, isOwnPickUp, isValid
+      })
+      commit('updateUserInfo', payload)
+    } catch (e) {
+      throw e;
+    }
+  }
+}

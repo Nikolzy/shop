@@ -89,7 +89,7 @@ export default {
       if (this.validate()) {
         this.user.isValid = true;
         if (this.user.isOwnPickUp) this.user.deliveryAddress = null;
-        this.$store.commit('user/updateUserInfo', this.user);
+        this.$store.dispatch('user/updateUserInfo', this.user)
         this.$router.push('/profile');
       }
     },

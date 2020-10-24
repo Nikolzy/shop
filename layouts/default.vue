@@ -37,14 +37,22 @@
     created () {
       this.$vuetify.theme.dark = false;
     },
+    async mounted() {
+      await this.fetchUserInfo();
+    },
     methods: {
-      setupFirebase () {
-        firebase.auth().onAuthStateChanged(user => {
-          if (user) {
-            console.log('loggedIn')
-          } else {
-            console.log('not logged in')
-          }
+      // setupFirebase () {
+      //   firebase.auth().onAuthStateChanged(user => {
+      //     if (user) {
+      //       console.log('loggedIn')
+      //     } else {
+      //       console.log('not logged in')
+      //     }
+      //   })
+      // },
+      fetchUserInfo () {
+        this.$store.dispatch('user/getUserInfo').then((res) => {
+          this.$store.commit('user/updateUserInfo', res)
         })
       }
     }
