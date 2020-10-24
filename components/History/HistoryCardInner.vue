@@ -8,7 +8,7 @@
       <v-card-text>
         <p class="history-card-title">Замовлення #{{ index + 1 }}</p>
         <div v-for="el in formattedOrder" class="history-card-info">
-          <span>{{ el.title }}</span> x <span>{{ el.count }}</span>
+          <div v-if="el.count"><span>{{ el.title }}</span> x <span>{{ el.count }}</span></div>
         </div>
       </v-card-text>
     </v-card>

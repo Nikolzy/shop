@@ -66,6 +66,13 @@ export const mutations = {
     data.status = payload.status;
   },
   setOrder (state) {
+    // const data = {};
+    // let price = 0;
+    // for (let key in state.cartItems) {
+    //   price += state.cartItems[key].price * state.cartItems[key].count;
+    // }
+    // data.order = state.cartItems;
+    // data.price = price;
     state.orders.push(state.cartItems);
     state.cartItems = {};
     state.productsAmount = 0;

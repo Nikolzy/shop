@@ -1,5 +1,5 @@
 <template>
-  <div class="history-card-wrapper">
+  <div class="history-card-wrapper" v-if="formattedOrders.length">
     <HistoryCardInner
       v-for="(order, i) in formattedOrders"
       :formatted-order="order"

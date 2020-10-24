@@ -2,7 +2,7 @@
       <v-flex v-if="showCard" xs12 md6 lg6 col-xs-12 col-md-12 col-lg-6>
         <ProductView
           :dialog="dialog"
-          :description="item.description"
+          :item="item"
           :type="type"
           :handleClose="handleClose"
         />
@@ -19,7 +19,7 @@
             </div>
             <div class="d-flex align-center">
               <v-text-field v-model="count" :disabled="showMessage && type === 'shop'" type="number" min="1"/>
-              <v-btn v-if="!showMessage" color="green" @click="addToCart">До кошику</v-btn>
+              <v-btn v-if="!showMessage" color="green" dark @click="addToCart">До кошику</v-btn>
               <pop-confirm-button
                 v-else
                 button-color="red"
@@ -143,14 +143,14 @@
     }
     .image {
       cursor: pointer;
+      opacity: 1;
+      transition: opacity .3s linear;
     }
     .price {
       margin: 0 10px;
     }
     .v-card__text {
       padding-top: 15px;
-      opacity: 1;
-      transition: opacity .3s linear;
     }
   }
   .card-subtitle {
@@ -186,8 +186,7 @@
     }
   }
 
-  .v-card__text:hover {
+  .image:hover {
     opacity: 0.7;
   }
-
 </style>
