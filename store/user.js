@@ -25,11 +25,11 @@ export const mutations = {
 };
 
 export const actions = {
-  async getUserInfo() {
+  async getUserInfo({ commit }) {
     try {
       const uid = firebase.auth().currentUser.uid;
       const info = (await firebase.database().ref(`/users/${uid}/info`).once('value')).val();
-      return info;
+      commit('updateUserInfo', info)
     } catch (e) {
       throw e;
     }

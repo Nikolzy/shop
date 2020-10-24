@@ -24,6 +24,7 @@
   import Navbar from '../components/Navbar'
   import * as firebase from 'firebase/app'
   import 'firebase/auth'
+  import products from '@/assets/products.json'
 
   export default {
     components: { Navbar },
@@ -33,12 +34,14 @@
     },
     data: () => ({
       drawer: null,
+      products: products
     }),
     created () {
       this.$vuetify.theme.dark = false;
     },
     async mounted() {
       await this.fetchUserInfo();
+      await this.setProducts();
     },
     methods: {
       // setupFirebase () {
@@ -50,10 +53,11 @@
       //     }
       //   })
       // },
-      fetchUserInfo () {
-        this.$store.dispatch('user/getUserInfo').then((res) => {
-          this.$store.commit('user/updateUserInfo', res)
-        })
+      async fetchUserInfo () {
+        await this.$store.dispatch('user/getUserInfo')
+      },
+      async setProducts () {
+        await this.$store.dispatch('cart/setProducts', this.products)
       }
     }
   }
