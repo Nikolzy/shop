@@ -37,6 +37,12 @@ export const mutations = {
     data.count = +payload.count;
     data.status = payload.status;
   },
+  clearCart (state) {
+    state.productsAmount = 0;
+    state.products = state.products.map(el => ({
+      ...el, status: 'removed', count: 1
+    }))
+  },
   setOrder (state) {
     const data = {};
     let price = 0;
@@ -47,10 +53,7 @@ export const mutations = {
     data.price = price;
     state.orders.push(data);
     state.cartItems = {};
-    state.productsAmount = 0;
-    state.products = state.products.map(el => ({
-      ...el, status: 'removed', count: 1
-    }))
+
   }
 };
 
@@ -59,5 +62,6 @@ export const actions = {
     const uid = firebase.auth().currentUser.uid;
     firebase.database().ref(`/users/${uid}/cart/products`).set(payload);
     commit('setProducts', payload);
+    commit('clearCart');
   }
 }

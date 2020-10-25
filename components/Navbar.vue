@@ -113,10 +113,9 @@
       handleRouter (path) {
         this.$router.push(path);
       },
-      logout () {
+      async logout () {
         // Cookies.remove('ACCESS_TOKEN')
-        firebase.auth().signOut().then(() => {
-        })
+        await this.$store.dispatch('auth/logout');
       }
     }
   }
