@@ -7,7 +7,9 @@ const firebaseConfig = {
     databaseURL: 'https://shop-b621c.firebaseio.com',
     projectId: 'shop-b621c',
     storageBucket: 'shop-b621c.appspot.com',
-    messagingSenderId: '677852912737'
+    messagingSenderId: '677852912737',
+    appId: '1:677852912737:web:e31fb313bbd5ce686d1e20',
+    measurementId: "G-5TXH6FS2D2"
 }
 
 let app = null;

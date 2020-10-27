@@ -1,4 +1,5 @@
 import colors from 'vuetify/es5/util/colors'
+import { auth } from 'firebase'
 
 export default {
   /*
@@ -59,17 +60,14 @@ export default {
       '@nuxtjs/pwa',
       // '@nuxtjs/firebase',
       // {
-      //   config: {
-      //     apiKey: 'AIzaSyCsJdN-9B6XMyxpplC4rzl9hd9389X8EJk',
-      //     authDomain: 'shop-b621c.firebaseapp.com',
-      //     databaseURL: 'https://shop-b621c.firebaseio.com',
-      //     projectId: 'shop-b621c',
-      //     storageBucket: 'shop-b621c.appspot.com',
-      //     messagingSenderId: '677852912737'
-      //   },
-      //   services: {
-      //     auth: true // Just as example. Can be any other service.
-      //   }
+        // config: {
+        //   apiKey: 'AIzaSyCsJdN-9B6XMyxpplC4rzl9hd9389X8EJk',
+        //   authDomain: 'shop-b621c.firebaseapp.com',
+        //   databaseURL: 'https://shop-b621c.firebaseio.com',
+        //   projectId: 'shop-b621c',
+        //   storageBucket: 'shop-b621c.appspot.com',
+        //   messagingSenderId: '677852912737'
+        // },
       // }
     ]
   ],
