@@ -53,6 +53,8 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
   name: 'Login',
   layout: 'empty',
@@ -72,6 +74,18 @@ export default {
         || 'Телефон обов\'язковий'
     ]
   }),
+  computed: {
+    ...mapGetters({
+      error: 'auth/getAuthError'
+    })
+  },
+  watch: {
+    error (value) {
+      if (value) {
+        this.notifyError(value);
+      }
+    }
+  },
   methods: {
     async registration () {
       if (this.$refs.form.validate()) {
@@ -81,13 +95,21 @@ export default {
           name: this.name,
           phone: this.phone
         }
-        await this.$store.dispatch('auth/register', data)
+        await this.$store.dispatch('auth/register', data);
         this.$router.push('/')
       }
     },
     checkEmail (email) {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regExp.test(email);
+    },
+    notifyError (error) {
+      if (error.includes('email-already-in-use')) {
+        this.$dialog.notify.error('Цей емейл вже зареєстрований!', {
+          position: 'top-right',
+          timeout: 3000
+        });
+      }
     }
   }
 }

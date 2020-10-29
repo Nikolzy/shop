@@ -43,6 +43,7 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 export default {
   name: 'Login',
   layout: 'empty',
@@ -50,6 +51,18 @@ export default {
     email: '',
     password: ''
   }),
+  computed: {
+    ...mapGetters({
+      error: 'auth/getAuthError'
+    })
+  },
+  watch: {
+    error (value) {
+      if (value) {
+        this.notifyError(value);
+      }
+    }
+  },
   methods: {
     async login () {
       try {
@@ -60,8 +73,21 @@ export default {
         await this.$store.dispatch('auth/login', data)
         this.$router.push('/');
       } catch (e) {
-        commit('setError', e)
+        console.log(e)
         throw e;
+      }
+    },
+    notifyError (error) {
+      if (error.includes('invalid-email')) {
+        this.$dialog.notify.error('Емейл введений неправильно!', {
+          position: 'top-right',
+          timeout: 3000
+        })
+      } else if (error.includes('wrong-password')) {
+        this.$dialog.notify.error('Емейл або пароль не вірний!', {
+          position: 'top-right',
+          timeout: 3000
+        })
       }
     }
   }

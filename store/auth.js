@@ -3,15 +3,26 @@ import 'firebase/auth';
 import 'firebase/database'
 
 export const state = {
-  ACCESS_TOKEN: null
+  ACCESS_TOKEN: null,
+  auth_error: ''
 }
 export const mutations = {
-  setToken (state, payload) {
+  setToken(state, payload) {
     state.ACCESS_TOKEN = payload;
   },
-  clearToken (state) {
+  clearToken(state) {
     state.ACCESS_TOKEN = null;
+  },
+  setAuthError(state, payload) {
+    state.auth_error = payload;
+  },
+  resetAuthError(state) {
+    state.auth_error = '';
   }
+}
+
+export const getters = {
+  getAuthError: state => state.auth_error
 }
 
 export const actions = {
@@ -29,22 +40,25 @@ export const actions = {
         commit('setToken', token);
       })
     }).catch(e => {
-      console.log(e)
+      commit('setAuthError', e.code);
     })
   },
-  async login ({ dispatch, commit }, { email, password }) {
+  async login ({ dispatch, commit, $dialog }, { email, password }) {
     await firebase.auth().signInWithEmailAndPassword(email, password).then((data) => {
       firebase.auth().currentUser.getIdToken(true).then((token) => {
         document.cookie = `ACCESS_TOKEN=${token};`
         commit('setToken', token);
       })
     }).catch(e => {
-      console.log(e)
+      commit('setAuthError', e.code);
     })
   },
-  async logout ({ dispatch, commit }) {
+  async logout ({ commit }) {
     firebase.auth().signOut().then(() => {
       commit('clearToken')
     })
+  },
+  getUid () {
+    return firebase.auth().currentUser.uid;
   }
 }

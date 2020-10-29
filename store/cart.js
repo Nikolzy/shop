@@ -20,12 +20,14 @@ export const mutations = {
   setProducts (state, payload) {
     state.products = payload;
   },
-  updateProductsAmount (state, payload) {
+  setCartItems (state, payload) {
     state.cartItems[payload.id] = {
       count: +payload.count,
       price: +payload.price,
       title: state.products.find(e => e.id === payload.id).title
     };
+  },
+  setProductsAmount (state) {
     let count = 0;
     for (let key in state.cartItems) {
       count += state.cartItems[key].count;
@@ -53,15 +55,37 @@ export const mutations = {
     data.price = price;
     state.orders.push(data);
     state.cartItems = {};
-
   }
 };
 
 export const actions = {
-  setProducts ({ commit }, payload) {
+  async setProducts ({ dispatch ,commit, state }, payload) {
     const uid = firebase.auth().currentUser.uid;
     firebase.database().ref(`/users/${uid}/cart/products`).set(payload);
     commit('setProducts', payload);
     commit('clearCart');
-  }
+  },
+  async setOrder ({ commit, state }) {
+    commit('setOrder');
+    const uid = firebase.auth().currentUser.uid;
+    firebase.database().ref(`/users/${uid}/cart/orders`).set(state.orders);
+    commit('clearCart');
+  },
+  async updateProductsAmount ({ commit, state }, payload) {
+    const uid = firebase.auth().currentUser.uid;
+    commit('setCartItems', payload);
+    // firebase.database().ref(`/users/${uid}/cart/cartItems`).set(state.cartItems);
+    commit('setProductsAmount');
+    // firebase.database().ref(`/users/${uid}/cart/productsAmount`).set(state.productsAmount);
+  },
+  // async getCartItems ({ state }) {
+  //   const uid = firebase.auth().currentUser.uid;
+  //   const cartItems = (await firebase.database().ref(`/users/${uid}/cart/cartItems`).once('value')).val();
+  //   state.cartItems = cartItems || {};
+  // },
+  // async getProductsAmount ({ state }) {
+  //   const uid = firebase.auth().currentUser.uid;
+  //   const productsAmount = (await firebase.database().ref(`/users/${uid}/cart/productsAmount`).once('value')).val();
+  //   state.productsAmount = productsAmount || 0;
+  // }
 }

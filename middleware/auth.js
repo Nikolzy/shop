@@ -10,7 +10,6 @@ export default function ({ redirect }) {
   return new Promise((resolve, reject) => {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        console.log(user, resolve(user))
         resolve(user);
       } else {
         return redirect('/login');

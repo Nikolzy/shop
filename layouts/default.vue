@@ -40,26 +40,11 @@
       this.$vuetify.theme.dark = false;
     },
     async mounted() {
-      await this.fetchUserInfo();
-      await this.setProducts();
+      await this.$store.dispatch('user/getUserInfo')
+      await this.$store.dispatch('cart/setProducts', this.products)
+      // await this.$store.dispatch('cart/getCartItems');
+      // await this.$store.dispatch('cart/getProductsAmount');
     },
-    methods: {
-      // setupFirebase () {
-      //   firebase.auth().onAuthStateChanged(user => {
-      //     if (user) {
-      //       console.log('loggedIn')
-      //     } else {
-      //       console.log('not logged in')
-      //     }
-      //   })
-      // },
-      async fetchUserInfo () {
-        await this.$store.dispatch('user/getUserInfo')
-      },
-      async setProducts () {
-        await this.$store.dispatch('cart/setProducts', this.products)
-      }
-    }
   }
 </script>
 

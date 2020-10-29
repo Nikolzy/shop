@@ -71,7 +71,7 @@
         immediate: false,
         handler (value) {
           if (this.type === 'basket' && +value && this.item.status === 'added') {
-            this.$store.commit('cart/updateProductsAmount', {
+            this.$store.dispatch('cart/updateProductsAmount', {
               id: this.item.id,
               count: this.count,
               price: this.item.price
@@ -84,7 +84,7 @@
       addToCart () {
         if (this.count >= 1) {
           this.showMessage = true;
-          this.$store.commit('cart/updateProductsAmount', {
+          this.$store.dispatch('cart/updateProductsAmount', {
             id: this.item.id,
             count: this.count,
             price: this.item.price
@@ -98,7 +98,7 @@
       },
       removeFromCart () {
         this.showMessage = false;
-        this.$store.commit('cart/updateProductsAmount', {
+        this.$store.dispatch('cart/updateProductsAmount', {
           id: this.item.id,
           count: 0,
           price: this.item.price

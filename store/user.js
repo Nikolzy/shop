@@ -25,19 +25,19 @@ export const mutations = {
 };
 
 export const actions = {
-  async getUserInfo({ commit }) {
+  async getUserInfo({ dispatch, commit }) {
     try {
-      const uid = firebase.auth().currentUser.uid;
+      const uid = await dispatch('auth/getUid', {}, { root: true });
       const info = (await firebase.database().ref(`/users/${uid}/info`).once('value')).val();
       commit('updateUserInfo', info)
     } catch (e) {
       throw e;
     }
   },
-  async updateUserInfo ({ commit }, payload) {
+  async updateUserInfo ({ dispatch, commit }, payload) {
     try {
       const { name, email, phone, deliveryAddress, isOwnPickUp, isValid } = payload;
-      const uid = firebase.auth().currentUser.uid;
+      const uid = await dispatch('auth/getUid', {}, { root: true });
       firebase.database().ref(`/users/${uid}/info`).set({
         name, email, phone, deliveryAddress, isOwnPickUp, isValid
       })

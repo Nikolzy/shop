@@ -50,7 +50,7 @@ export default {
     updated: false,
     message: 'Ви підтверджуєте замовлення?'
   }),
-  mounted() {
+  async mounted() {
     this.calculatePrice();
   },
   computed: {
@@ -81,7 +81,7 @@ export default {
       this.updated = !this.updated;
     },
     confirmOrder() {
-      this.$store.commit('cart/setOrder');
+      this.$store.dispatch('cart/setOrder');
       this.$router.push('/history');
     }
   }

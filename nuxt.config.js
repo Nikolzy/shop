@@ -56,8 +56,8 @@ export default {
   ** Nuxt.js modules
   */
   modules: [
-    [
       '@nuxtjs/pwa',
+      ['vuetify-dialog/nuxt', { property: '$dialog' }]
       // '@nuxtjs/firebase',
       // {
         // config: {
@@ -69,7 +69,6 @@ export default {
         //   messagingSenderId: '677852912737'
         // },
       // }
-    ]
   ],
   /*
   ** vuetify module configuration
