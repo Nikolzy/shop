@@ -17,9 +17,14 @@
         ></v-text-field>
         <v-text-field
           v-model="password"
+          :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
           :rules="passwordRules"
+          :type="show ? 'text' : 'password'"
           color="green"
+          name="input-10-1"
           label="Пароль"
+          counter
+          @click:append="show = !show"
         ></v-text-field>
         <v-text-field
           v-model="phone"
@@ -72,7 +77,8 @@ export default {
       v => !!v || 'Це поле є обов\'язковим',
       v => (v.trim().length === 10 || v.trim().length === 12)
         || 'Телефон обов\'язковий'
-    ]
+    ],
+    show: false
   }),
   computed: {
     ...mapGetters({

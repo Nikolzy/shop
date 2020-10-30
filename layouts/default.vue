@@ -22,7 +22,6 @@
 
 <script>
   import Navbar from '../components/Navbar'
-  import * as firebase from 'firebase/app'
   import 'firebase/auth'
   import products from '@/assets/products.json'
 
