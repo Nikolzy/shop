@@ -55,6 +55,15 @@ export const mutations = {
     data.price = price;
     state.orders.push(data);
     state.cartItems = {};
+  },
+  setOrders (state, payload) {
+    state.orders = payload;
+  },
+  clearState (state) {
+    state.productsAmount = 0;
+    state.orders = [];
+    state.cartItems = {};
+    state.products = [];
   }
 };
 
@@ -76,12 +85,19 @@ export const actions = {
     commit('clearCart');
   },
   async updateProductsAmount ({ commit, state }, payload) {
-    const uid = firebase.auth().currentUser.uid;
     commit('setCartItems', payload);
     // firebase.database().ref(`/users/${uid}/cart/cartItems`).set(state.cartItems);
     commit('setProductsAmount');
     // firebase.database().ref(`/users/${uid}/cart/productsAmount`).set(state.productsAmount);
   },
+  clearState ({ commit }) {
+    commit('clearState');
+  },
+  async getOrders ({ commit }) {
+    const uid = firebase.auth().currentUser.uid;
+    const orders = (await firebase.database().ref(`/users/${uid}/cart/orders`).once('value')).val();
+    commit('setOrders', orders || []);
+  }
   // async getCartItems ({ state }) {
   //   const uid = firebase.auth().currentUser.uid;
   //   const cartItems = (await firebase.database().ref(`/users/${uid}/cart/cartItems`).once('value')).val();

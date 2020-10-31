@@ -15,6 +15,10 @@ export const mutations = {
   },
   clearEditedProduct (state) {
     state.editedProduct = {};
+  },
+  clearState (state) {
+    state.products = [];
+    state.editedProduct = {};
   }
 }
 
@@ -79,5 +83,8 @@ export const actions = {
     } catch (e) {
       throw e;
     }
+  },
+  clearState ({ commit }) {
+    commit('clearState');
   }
 }

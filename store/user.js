@@ -22,6 +22,17 @@ export const getters = {
 export const mutations = {
   updateUserInfo(state, payload) {
     state.user = payload;
+  },
+  clearState (state) {
+    state.user = {
+      name: '',
+      email: '',
+      phone: '',
+      deliveryAddress: null,
+      isOwnPickUp: false,
+      isValid: false,
+      isAdmin: false
+    }
   }
 };
 
@@ -39,12 +50,15 @@ export const actions = {
     try {
       const { name, email, phone, deliveryAddress, isOwnPickUp, isValid, isAdmin } = payload;
       const uid = await dispatch('auth/getUid', {}, { root: true });
-      firebase.database().ref(`/users/${uid}/info`).set({
+      await firebase.database().ref(`/users/${uid}/info`).set({
         name, email, phone, deliveryAddress, isOwnPickUp, isValid, isAdmin
       })
       commit('updateUserInfo', payload)
     } catch (e) {
       throw e;
     }
+  },
+  clearState ({ commit }) {
+    commit('clearState');
   }
 }

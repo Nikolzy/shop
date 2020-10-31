@@ -10,13 +10,11 @@ export const mutations = {
   setToken(state, payload) {
     state.ACCESS_TOKEN = payload;
   },
-  clearToken(state) {
-    state.ACCESS_TOKEN = null;
-  },
   setAuthError(state, payload) {
     state.auth_error = payload;
   },
-  resetAuthError(state) {
+  clearState (state) {
+    state.ACCESS_TOKEN = null;
     state.auth_error = '';
   }
 }
@@ -54,9 +52,12 @@ export const actions = {
       commit('setAuthError', e.code);
     })
   },
-  async logout ({ commit }) {
-    firebase.auth().signOut().then(() => {
-      commit('clearToken')
+  async logout ({ dispatch, commit }) {
+    await firebase.auth().signOut().then(() => {
+      commit('clearState');
+      dispatch('user/clearState', {}, { root: true });
+      dispatch('cart/clearState', {}, { root: true });
+      dispatch('admin/clearState', {}, { root: true });
     })
   },
   getUid () {
