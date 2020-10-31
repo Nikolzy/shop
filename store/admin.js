@@ -56,6 +56,17 @@ export const actions = {
     let editedProduct = products.find(el => el.id === +productId);
     commit('setEditedProduct', editedProduct);
   },
+  // async getUsers () {
+  //   const products = (await firebase.database().ref('/users').once('value')).val() || [];
+  //   const res = [];
+  //   for (let key in products) {
+  //     res.push({
+  //       ...products[key]['info'],
+  //       uid: key
+  //     })
+  //   }
+  //   console.log(res)
+  // },
   async updateAdminProductById ({ dispatch ,commit }, payload) {
     try {
       const products = (await firebase.database().ref('/products').once('value')).val() || [];

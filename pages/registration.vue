@@ -2,7 +2,7 @@
   <v-card dark>
     <v-card-title>Реєстрація</v-card-title>
     <v-card-text>
-      <v-form ref="form" @submit="registration">
+      <v-form ref="form">
         <v-text-field
           v-model="name"
           :rules="[v => !!v || 'Це поле є обов\'язковим']"
@@ -28,7 +28,7 @@
         ></v-text-field>
         <v-text-field
           v-model="phone"
-          :rules="phoneRules"
+          :rules="[v => checkPhoneNumber(v) || 'Введіть корректний мобільний номер']"
           color="green"
           label="Телефон"
         ></v-text-field>
@@ -73,12 +73,9 @@ export default {
       v => !v.replace(/[a-zA-Z0-9]+/, '') || 'Дозволена тільки латиниця та цифри',
       v => (v.trim() && v.trim().length > 8) || 'Пароль повинен бути не менше 8 символів'
     ],
-    phoneRules: [
-      v => !!v || 'Це поле є обов\'язковим',
-      v => (v.trim().length === 10 || v.trim().length === 12)
-        || 'Телефон обов\'язковий'
-    ],
-    show: false
+    show: false,
+    minNum: 10,
+    maxNum: 12
   }),
   computed: {
     ...mapGetters({
@@ -109,8 +106,14 @@ export default {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regExp.test(email);
     },
-    click (val) {
-      console.log(val, 'hello')
+    checkPhoneNumber (number) {
+      const phoneLength = number.trim().length;
+      const reg = /^[3][8]/;
+      if (reg.test(number)) {
+        return phoneLength === this.maxNum;
+      } else {
+        return phoneLength === this.minNum;
+      }
     },
     notifyError (error) {
       if (error.includes('email-already-in-use')) {

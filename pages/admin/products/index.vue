@@ -69,11 +69,11 @@
       messageText: 'Ви дійсно хочете видали продукт?',
       headers: [
         { text: 'ID', value: 'id' },
-        { text: 'Фото', value: 'imageURL' },
+        { text: 'Фото', value: 'imageURL', sortable: false },
         { text: 'Назва', value: 'title' },
         { text: 'Ціна (грн)', value: 'price' },
-        { text: 'Опис', value: 'description' },
-        { text: 'Дії', value: 'actions' },
+        { text: 'Опис', value: 'description', sortable: false },
+        { text: 'Дії', value: 'actions', sortable: false },
       ],
       footerProps: {
         'items-per-page-options': [10, 20, 50, 100, 200, -1],

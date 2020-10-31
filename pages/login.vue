@@ -7,14 +7,12 @@
           <v-form ref="form">
             <v-text-field
               v-model="email"
-              :rules="[v => !!checkEmail(v) || 'Це поле є обов\'язковим']"
               color="green"
               label="Емейл"
             ></v-text-field>
             <v-text-field
               v-model="password"
               :append-icon="show ? 'mdi-eye' : 'mdi-eye-off'"
-              :rules="passwordRules"
               :type="show ? 'text' : 'password'"
               color="green"
               name="input-10-1"
@@ -58,11 +56,6 @@ export default {
   data: () => ({
     email: '',
     password: '',
-    passwordRules: [
-      v => !!v || 'Це поле є обов\'язковим',
-      v => !v.replace(/[a-zA-Z0-9]+/, '') || 'Дозволена тільки латиниця та цифри',
-      v => (v.trim() && v.trim().length > 8) || 'Пароль повинен бути не менше 8 символів'
-    ],
     show: false
   }),
   computed: {
@@ -90,10 +83,6 @@ export default {
         console.log(e)
         throw e;
       }
-    },
-    checkEmail (email) {
-      const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-      return regExp.test(email);
     },
     notifyError (error) {
       if (error.includes('invalid-email')) {

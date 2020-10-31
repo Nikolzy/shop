@@ -1,5 +1,5 @@
 <template>
-  <v-app id="inspire">
+  <v-app>
     <div>
       <v-navigation-drawer
         v-model="drawer"
@@ -16,8 +16,18 @@
               <v-icon>mdi-shopping</v-icon>
             </v-list-item-action>
             <v-list-item-content>
-              <v-list-item-title>
+              <v-list-item-title style="color: #fff;">
                 Товари
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+          <v-list-item link @click="handleRouter('/users')">
+            <v-list-item-action>
+              <v-icon>mdi-account-plus</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title style="color: #fff;">
+                Користувачі
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
