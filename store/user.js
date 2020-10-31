@@ -9,7 +9,8 @@ export const state = () => ({
     phone: '',
     deliveryAddress: null,
     isOwnPickUp: false,
-    isValid: false
+    isValid: false,
+    isAdmin: false
   }
 });
 
@@ -36,10 +37,10 @@ export const actions = {
   },
   async updateUserInfo ({ dispatch, commit }, payload) {
     try {
-      const { name, email, phone, deliveryAddress, isOwnPickUp, isValid } = payload;
+      const { name, email, phone, deliveryAddress, isOwnPickUp, isValid, isAdmin } = payload;
       const uid = await dispatch('auth/getUid', {}, { root: true });
       firebase.database().ref(`/users/${uid}/info`).set({
-        name, email, phone, deliveryAddress, isOwnPickUp, isValid
+        name, email, phone, deliveryAddress, isOwnPickUp, isValid, isAdmin
       })
       commit('updateUserInfo', payload)
     } catch (e) {

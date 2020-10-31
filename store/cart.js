@@ -59,11 +59,15 @@ export const mutations = {
 };
 
 export const actions = {
-  async setProducts ({ dispatch ,commit, state }, payload) {
+  async setProducts ({ dispatch ,commit }, payload) {
     const uid = firebase.auth().currentUser.uid;
     firebase.database().ref(`/users/${uid}/cart/products`).set(payload);
     commit('setProducts', payload);
     commit('clearCart');
+  },
+  async getProducts ({ commit }) {
+    const products = (await firebase.database().ref(`/products`).once('value')).val();
+    commit('setProducts', products || []);
   },
   async setOrder ({ commit, state }) {
     commit('setOrder');

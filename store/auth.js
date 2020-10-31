@@ -33,7 +33,8 @@ export const actions = {
         name, email, phone,
         deliveryAddress: '',
         isOwnPickUp: false,
-        isValid: false
+        isValid: false,
+        isAdmin: false
       })
       firebase.auth().currentUser.getIdToken(true).then((token) => {
         document.cookie = `ACCESS_TOKEN=${token};`

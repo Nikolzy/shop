@@ -2,7 +2,7 @@
   <v-card dark>
     <v-card-title>Реєстрація</v-card-title>
     <v-card-text>
-      <v-form ref="form">
+      <v-form ref="form" @submit="registration">
         <v-text-field
           v-model="name"
           :rules="[v => !!v || 'Це поле є обов\'язковим']"
@@ -108,6 +108,9 @@ export default {
     checkEmail (email) {
       const regExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
       return regExp.test(email);
+    },
+    click (val) {
+      console.log(val, 'hello')
     },
     notifyError (error) {
       if (error.includes('email-already-in-use')) {

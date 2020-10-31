@@ -40,7 +40,7 @@
     },
     async mounted() {
       await this.$store.dispatch('user/getUserInfo')
-      await this.$store.dispatch('cart/setProducts', this.products)
+      await this.$store.dispatch('cart/getProducts')
       // await this.$store.dispatch('cart/getCartItems');
       // await this.$store.dispatch('cart/getProductsAmount');
     },

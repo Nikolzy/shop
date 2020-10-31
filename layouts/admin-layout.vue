@@ -30,29 +30,47 @@
       >
         <div class="d-flex align-center">
           <v-app-bar-nav-icon @click.stop="drawer = !drawer"></v-app-bar-nav-icon>
-          <v-toolbar-title>Application</v-toolbar-title>
+          <v-toolbar-title>Admin Panel</v-toolbar-title>
         </div>
-        <div>
-        </div>
+        <v-tooltip
+          v-model="show"
+          bottom
+        >
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              v-bind="attrs"
+              v-on="on"
+            >
+              <nuxt-link to="/" class="nav-item" style="color: white">
+                <v-icon>mdi-keyboard-return</v-icon>
+              </nuxt-link>
+            </v-btn>
+          </template>
+          <span>До магазину</span>
+        </v-tooltip>
       </v-app-bar>
     </div>
-    <v-content style="color: #212121; background-color: aliceblue">
-      <nuxt />
-    </v-content>
+    <v-main style="color: #212121; background-color: aliceblue">
+      <v-layout pa-8>
+        <nuxt />
+      </v-layout>
+    </v-main>
   </v-app>
 </template>
 
 <script>
 export default {
   data: () => ({
-    drawer: null
+    drawer: null,
+    show: false
   }),
   props: {
     source: String
   },
   methods: {
     handleRouter (path) {
-      this.$router.push(`/admin/${path}`);
+      this.$router.push(`/admin${path}`);
     }
   }
 }

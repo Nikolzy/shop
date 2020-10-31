@@ -12,12 +12,6 @@ export default function ({ redirect, $dialog }) {
       if (user) {
         resolve(user);
       } else {
-        setTimeout(() => {
-          $dialog.notify.error('Ви не зареєстровані в системі!', {
-            position: 'top-right',
-            timeout: 3000
-          })
-        }, 1000)
         return redirect('/login');
       }
     })
