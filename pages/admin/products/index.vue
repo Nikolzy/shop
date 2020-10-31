@@ -64,7 +64,6 @@
   export default {
     components: { LoadingComponent, DeleteButtonWithConfirm },
     layout: 'admin-layout',
-    middleware: 'admin',
     data: () => ({
       messageText: 'Ви дійсно хочете видали продукт?',
       headers: [

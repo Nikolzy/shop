@@ -1,12 +1,14 @@
 <template>
-  <div class="profile">
-    <h1>Мій профіль</h1>
-    <v-form ref="form">
+  <loading-component v-if="loading || !user"/>
+  <div v-else>
+    <h1>Редагувати користувача</h1>
+    <v-form ref="form" class="form">
       <v-text-field
         v-model.trim="user.name"
         label="Ім'я"
         :rules="[v => !!v || 'Це поле є обов\'язковим']"
         required
+        color="green"
       />
       <v-text-field
         v-model.trim="user.email"
@@ -14,6 +16,7 @@
         :validate-on-blur="true"
         :rules="[v => !!checkEmail(v) || 'Це поле є обов\'язковим']"
         required
+        color="green"
       />
       <v-text-field
         v-model="user.phone"
@@ -24,6 +27,7 @@
         :validate-on-blur="true"
         :rules="[v => checkPhoneNumber(v) || 'Введіть корректний мобільний номер']"
         required
+        color="green"
       ></v-text-field>
       <v-select
         v-model="user.deliveryAddress"
@@ -32,15 +36,22 @@
         :rules="[v => !!checkAddress(v) || 'Це поле є обов\'язковим']"
         required
         label="Пункт отримання товару"
+        color="green"
       />
       <div>
         <v-checkbox
           v-model="user.isOwnPickUp"
           class="mt-0"
+          color="green"
         >
           <span slot="label">Заберу сам (вул. Шевченка 69, с. Жуляни)</span>
         </v-checkbox>
       </div>
+      <v-checkbox
+        v-model="user.isAdmin"
+        color="green"
+        label="Адмін"
+      />
       <pop-confirm-button
         button-color="green"
         button-label="Зберегти"
@@ -53,17 +64,14 @@
 </template>
 
 <script>
+import LoadingComponent from '@/components/common/LoadingComponent';
+import { mapGetters } from 'vuex';
+
 export default {
-  name: 'ProfileEdit',
+  components: { LoadingComponent },
+  layout: 'admin-layout',
   data: () => ({
-    user: {
-      name: '',
-      email: '',
-      phone: '',
-      deliveryAddress: null,
-      isOwnPickUp: false,
-      isValid: false
-    },
+    user: {},
     message: 'Зберегти дані користувача?',
     address: [{
       text: 'Не вибрано',
@@ -79,18 +87,37 @@ export default {
       value: 'silpoKoneva'
     }],
     minNum: 10,
-    maxNum: 12
+    maxNum: 12,
+    loading: true
   }),
-  mounted() {
-    this.user = { ...this.$store.getters['user/getUser'] };
+  async mounted() {
+    const { user_id } = this.$route.params;
+    await this.$store.dispatch('admin/getUserById', user_id);
+    this.user = { ...this.userInfo };
+    this.loading = false;
+  },
+  computed: {
+    ...mapGetters({
+      userInfo: 'admin/getEditedUser'
+    })
   },
   methods: {
-    updateUser () {
+    async updateUser () {
       if (this.validate()) {
+        const { user_id } = this.$route.params;
         this.user.isValid = true;
-        if (this.user.isOwnPickUp) this.user.deliveryAddress = null;
-        this.$store.dispatch('user/updateUserInfo', this.user)
-        this.$router.push('/profile');
+        await this.$store.dispatch('admin/updateUserInfoById', this.user).then(() => {
+          this.$dialog.notify.success('Користувач успішно оновлений!', {
+            position: 'top-right',
+            timeout: 3000
+          })
+          this.$router.push('/admin/users');
+        }).catch(() => {
+          this.$dialog.notify.error('При оновлені користувача виникла помилка! Спробуйте ще раз!', {
+            position: 'top-right',
+            timeout: 3000
+          })
+        })
       }
     },
     checkPhoneNumber (number) {
@@ -117,13 +144,11 @@ export default {
 </script>
 
 <style scoped>
-  .profile {
-    width: 50%;
-    transition: all .3s linear;
-  }
-  @media screen and (max-width: 768px) {
-    .profile {
-      width: 100%;
-    }
-  }
+.form {
+  background: darkgray;
+  border-radius: 20px;
+  padding: 10px 20px;
+  margin-top: 20px;
+  max-width: 500px;
+}
 </style>

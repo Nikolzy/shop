@@ -4,7 +4,9 @@ import 'firebase/database'
 
 export const state = {
   products: [],
-  editedProduct: {}
+  editedProduct: {},
+  users: [],
+  editedUser: {},
 }
 export const mutations = {
   setProducts (state, payload) {
@@ -13,18 +15,31 @@ export const mutations = {
   setEditedProduct (state, payload) {
     state.editedProduct = payload;
   },
+  setUsers (state, payload) {
+    state.users = payload;
+  },
+  setEditedUser (state, payload) {
+    state.editedUser = payload;
+  },
   clearEditedProduct (state) {
     state.editedProduct = {};
+  },
+  clearEditedUser (state) {
+    state.editedUser = {};
   },
   clearState (state) {
     state.products = [];
     state.editedProduct = {};
+    state.users = [];
+    state.editedUser = {};
   }
 }
 
 export const getters = {
   getAdminProducts: state => state.products,
-  getAdminEditedProduct: state => state.editedProduct
+  getAdminEditedProduct: state => state.editedProduct,
+  getAdminUsers: state => state.users,
+  getEditedUser: state => state.editedUser
 }
 
 export const actions = {
@@ -56,17 +71,6 @@ export const actions = {
     let editedProduct = products.find(el => el.id === +productId);
     commit('setEditedProduct', editedProduct);
   },
-  // async getUsers () {
-  //   const products = (await firebase.database().ref('/users').once('value')).val() || [];
-  //   const res = [];
-  //   for (let key in products) {
-  //     res.push({
-  //       ...products[key]['info'],
-  //       uid: key
-  //     })
-  //   }
-  //   console.log(res)
-  // },
   async updateAdminProductById ({ dispatch ,commit }, payload) {
     try {
       const products = (await firebase.database().ref('/products').once('value')).val() || [];
@@ -94,6 +98,33 @@ export const actions = {
     } catch (e) {
       throw e;
     }
+  },
+  async getUsers ({ commit }) {
+    const usersInfo = (await firebase.database().ref('/users').once('value')).val() || [];
+    const currentUserId = await firebase.auth().currentUser.uid;
+    const users = [];
+    for (let key in usersInfo) {
+      users.push({
+        ...usersInfo[key]['info'],
+        uid: key,
+        isCurrentUser: key === currentUserId
+      })
+    }
+    commit('setUsers', users);
+  },
+  getUserById ({ commit, state }, userId) {
+    const user = state.users.find(el => el.uid === userId);
+    commit('setEditedUser', user);
+  },
+  async updateUserInfoById ({ commit, state }, payload) {
+    const editedUserInfo = { ...payload };
+    delete editedUserInfo.uid;
+    await firebase.database().ref(`/users/${payload.uid}/info`).set(editedUserInfo);
+    commit('clearEditedUser');
+  },
+  async deleteUserById ({}, userId) {
+    await firebase.database().ref(`/users/${userId}/cart`).set(null);
+    await firebase.database().ref(`/users/${userId}/info`).set(null);
   },
   clearState ({ commit }) {
     commit('clearState');

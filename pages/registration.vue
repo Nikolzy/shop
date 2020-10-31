@@ -99,7 +99,7 @@ export default {
           phone: this.phone
         }
         await this.$store.dispatch('auth/register', data);
-        this.$router.push('/')
+        this.$router.push('/products')
       }
     },
     checkEmail (email) {

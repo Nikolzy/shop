@@ -52,7 +52,7 @@
               v-bind="attrs"
               v-on="on"
             >
-              <nuxt-link to="/" class="nav-item" style="color: white">
+              <nuxt-link to="/products" class="nav-item" style="color: white">
                 <v-icon>mdi-keyboard-return</v-icon>
               </nuxt-link>
             </v-btn>
@@ -71,12 +71,16 @@
 
 <script>
 export default {
+  middleware: 'admin',
   data: () => ({
     drawer: null,
     show: false
   }),
   props: {
     source: String
+  },
+  created () {
+    this.$vuetify.theme.dark = true;
   },
   methods: {
     handleRouter (path) {

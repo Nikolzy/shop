@@ -48,7 +48,6 @@ import LoadingComponent from '@/components/common/LoadingComponent'
 export default {
   components: { LoadingComponent },
   layout: 'admin-layout',
-  middleware: 'admin',
   data: () => ({
     product: null,
     loading: true,
@@ -79,7 +78,7 @@ export default {
           id: +product_id
         };
         await this.$store.dispatch('admin/updateAdminProductById', data).then(() => {
-          this.$dialog.notify.success('Товар успішно обновлено!', {
+          this.$dialog.notify.success('Товар успішно оновлено!', {
             position: 'top-right',
             timeout: 3000
           })

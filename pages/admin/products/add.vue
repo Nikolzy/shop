@@ -45,7 +45,6 @@
 <script>
 export default {
   layout: 'admin-layout',
-  middleware: 'admin',
   data: () => ({
     product: {
       title: '',

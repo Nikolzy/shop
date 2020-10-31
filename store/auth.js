@@ -24,7 +24,7 @@ export const getters = {
 }
 
 export const actions = {
-  async register ({ dispatch, commit }, { email, password, name, phone }) {
+  async register ({ dispatch, commit }, { email, password, name, phone, isAdmin }) {
     await firebase.auth().createUserWithEmailAndPassword(email, password).then((data) => {
       const uid = firebase.auth().currentUser.uid;
       firebase.database().ref(`/users/${uid}/info`).set({
@@ -32,7 +32,7 @@ export const actions = {
         deliveryAddress: '',
         isOwnPickUp: false,
         isValid: false,
-        isAdmin: false
+        isAdmin: isAdmin || false
       })
       firebase.auth().currentUser.getIdToken(true).then((token) => {
         document.cookie = `ACCESS_TOKEN=${token};`

@@ -78,7 +78,7 @@ export default {
           password: this.password
         }
         await this.$store.dispatch('auth/login', data)
-        this.$router.push('/');
+        this.$router.push('/products');
       } catch (e) {
         console.log(e)
         throw e;
