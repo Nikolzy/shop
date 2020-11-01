@@ -1,6 +1,7 @@
 import * as firebase from "firebase/app";
 import 'firebase/auth';
-import 'firebase/database'
+import 'firebase/database';
+import { secondaryApp } from '@/plugins/firebase'
 
 export const state = {
   products: [],
@@ -119,6 +120,7 @@ export const actions = {
   async updateUserInfoById ({ commit, state }, payload) {
     const editedUserInfo = { ...payload };
     delete editedUserInfo.uid;
+    delete editedUserInfo.isCurrentUser;
     await firebase.database().ref(`/users/${payload.uid}/info`).set(editedUserInfo);
     commit('clearEditedUser');
   },

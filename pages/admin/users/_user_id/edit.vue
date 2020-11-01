@@ -48,6 +48,7 @@
         </v-checkbox>
       </div>
       <v-checkbox
+        v-if="!user.isCurrentUser"
         v-model="user.isAdmin"
         color="green"
         label="Адмін"

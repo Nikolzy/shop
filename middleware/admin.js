@@ -18,7 +18,7 @@ export default async function ({ redirect, $dialog }) {
               timeout: 3000
             })
           }, 1000)
-          return redirect('/');
+          return redirect('/products');
         } else {
           return redirect('/login');
         }
