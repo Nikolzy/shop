@@ -45,7 +45,7 @@ export const mutations = {
       ...el, status: 'removed', count: 1
     }))
   },
-  setOrder (state) {
+  setOrder (state, orderId) {
     const data = {};
     let price = 0;
     for (let key in state.cartItems) {
@@ -53,6 +53,7 @@ export const mutations = {
     }
     data.order = state.cartItems;
     data.price = price;
+    data.id = orderId;
     state.orders.push(data);
     state.cartItems = {};
   },
@@ -79,7 +80,10 @@ export const actions = {
     commit('setProducts', products || []);
   },
   async setOrder ({ commit, state }) {
-    commit('setOrder');
+    const generalId = (await firebase.database().ref('/generalOrderId').once('value')).val();
+    const id = generalId ? generalId + 1 : 1;
+    await firebase.database().ref('/generalOrderId').set(id);
+    commit('setOrder', id);
     const uid = firebase.auth().currentUser.uid;
     firebase.database().ref(`/users/${uid}/cart/orders`).set(state.orders);
     commit('clearCart');

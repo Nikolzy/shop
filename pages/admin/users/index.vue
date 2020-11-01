@@ -56,6 +56,20 @@
             </template>
             <span>Редактировать</span>
           </v-tooltip>
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                small
+                v-bind="attrs"
+                class="mr-2"
+                v-on="on"
+                @click="ordersUser(item)"
+              >
+                mdi-clipboard-check-outline
+              </v-icon>
+            </template>
+            <span>Замовлення</span>
+          </v-tooltip>
           <div v-if="!item.isCurrentUser">
             <DeleteButtonWithConfirm :message-text="messageText" @deleteItem="deleteItem(item)" />
           </div>
@@ -119,6 +133,9 @@ export default {
   methods: {
     editUser (item) {
       this.$router.push(`/admin/users/${item.uid}/edit`);
+    },
+    ordersUser (item) {
+      this.$router.push(`/admin/users/${item.uid}/orders`);
     },
     async deleteItem (item) {
       this.loadingDelete = true;

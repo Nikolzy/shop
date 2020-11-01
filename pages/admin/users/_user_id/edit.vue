@@ -99,7 +99,7 @@ export default {
   },
   computed: {
     ...mapGetters({
-      userInfo: 'admin/getEditedUser'
+      userInfo: 'admin/getUser'
     })
   },
   methods: {
