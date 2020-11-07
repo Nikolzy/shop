@@ -7,7 +7,9 @@ export const state = {
   editedProduct: {},
   users: [],
   user: {},
-  userOrders: []
+  userOrders: [],
+  staticsOrderNames: [],
+  staticsOrderCount: []
 }
 export const mutations = {
   setProducts (state, payload) {
@@ -24,6 +26,12 @@ export const mutations = {
   },
   setOrders (state, payload) {
     state.userOrders = payload;
+  },
+  setStaticsOrderNames (state, payload) {
+    state.staticsOrderNames = payload;
+  },
+  setStaticsOrderCount (state, payload) {
+    state.staticsOrderCount = payload;
   },
   clearEditedProduct (state) {
     state.editedProduct = {};
@@ -45,7 +53,9 @@ export const getters = {
   getAdminEditedProduct: state => state.editedProduct,
   getAdminUsers: state => state.users,
   getUser: state => state.user,
-  getOrders: state => state.userOrders
+  getOrders: state => state.userOrders,
+  getStaticsOrderNames: state => state.staticsOrderNames,
+  getStaticsOrderCount: state => state.staticsOrderCount
 }
 
 export const actions = {
@@ -136,6 +146,31 @@ export const actions = {
   async getOrderByUserId ({ commit }, userId) {
     const orders = (await firebase.database().ref(`/users/${userId}/cart/orders`).once('value')).val();
     commit('setOrders', orders || []);
+  },
+  async getOrderForStatics ({ commit }) {
+    const usersInfo = (await firebase.database().ref('/users').once('value')).val() || [];
+    const orders = [];
+    for (let key in usersInfo) {
+      const user = usersInfo[key];
+      if (user.cart && user.cart.orders) {
+        orders.push(user.cart.orders)
+      }
+    }
+    const preMadeArray = orders.flat().map(el => {
+      if (el.order.length) {
+        return el.order;
+      }
+      return Object.values(el.order)
+    })
+    console.log(preMadeArray.flat())
+    const res = preMadeArray.flat().reduce((ac,el) => {
+      ac[el.title] = ac[el.title] ? ac[el.title] + el.count : 1;
+      return ac;
+    },{})
+    const resultOrderNames = Object.keys(res);
+    const resultOrderCount = Object.values(res);
+    commit('setStaticsOrderNames', resultOrderNames);
+    commit('setStaticsOrderCount', resultOrderCount);
   },
   clearState ({ commit }) {
     commit('clearState');

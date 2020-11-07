@@ -31,6 +31,16 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-list-item link @click="handleRouter('/statics')">
+            <v-list-item-action>
+              <v-icon>mdi-chart-pie</v-icon>
+            </v-list-item-action>
+            <v-list-item-content>
+              <v-list-item-title style="color: #fff;">
+                Статистика
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
         </v-list>
       </v-navigation-drawer>
       <v-app-bar
