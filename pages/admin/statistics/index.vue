@@ -12,19 +12,13 @@
     layout: 'admin-layout',
     components: { PieChart },
     async mounted () {
-      await this.$store.dispatch('admin/getOrderForStatics');
-      this.createChartData();
+      await this.$store.dispatch('admin/getOrderForStatistics');
     },
     computed: {
       ...mapGetters({
-        orderNames: 'admin/getStaticsOrderNames',
-        orderCount: 'admin/getStaticsOrderCount'
+        orderNames: 'admin/getStatisticsOrderNames',
+        orderCount: 'admin/getStatisticsOrderCount'
       })
-    },
-    methods: {
-      createChartData () {
-        // console.log(this.usersInfo)
-      }
     }
   }
 </script>

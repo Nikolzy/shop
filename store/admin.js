@@ -8,8 +8,9 @@ export const state = {
   users: [],
   user: {},
   userOrders: [],
-  staticsOrderNames: [],
-  staticsOrderCount: []
+  statisticsOrderNames: [],
+  statisticsOrderCount: [],
+  generalSettings: {}
 }
 export const mutations = {
   setProducts (state, payload) {
@@ -27,11 +28,14 @@ export const mutations = {
   setOrders (state, payload) {
     state.userOrders = payload;
   },
-  setStaticsOrderNames (state, payload) {
-    state.staticsOrderNames = payload;
+  setStatisticsOrderNames (state, payload) {
+    state.statisticsOrderNames = payload;
   },
-  setStaticsOrderCount (state, payload) {
-    state.staticsOrderCount = payload;
+  setStatisticsOrderCount (state, payload) {
+    state.statisticsOrderCount = payload;
+  },
+  setGeneralSettings (state, payload) {
+    state.generalSettings = payload;
   },
   clearEditedProduct (state) {
     state.editedProduct = {};
@@ -45,6 +49,8 @@ export const mutations = {
     state.users = [];
     state.user = {};
     state.userOrders = [];
+    state.statisticsOrderNames = [];
+    state.statisticsOrderCount = [];
   }
 }
 
@@ -54,8 +60,9 @@ export const getters = {
   getAdminUsers: state => state.users,
   getUser: state => state.user,
   getOrders: state => state.userOrders,
-  getStaticsOrderNames: state => state.staticsOrderNames,
-  getStaticsOrderCount: state => state.staticsOrderCount
+  getStatisticsOrderNames: state => state.statisticsOrderNames,
+  getStatisticsOrderCount: state => state.statisticsOrderCount,
+  getContactsGeneralSettings: state => state.generalSettings.contacts || {}
 }
 
 export const actions = {
@@ -147,7 +154,7 @@ export const actions = {
     const orders = (await firebase.database().ref(`/users/${userId}/cart/orders`).once('value')).val();
     commit('setOrders', orders || []);
   },
-  async getOrderForStatics ({ commit }) {
+  async getOrderForStatistics ({ commit }) {
     const usersInfo = (await firebase.database().ref('/users').once('value')).val() || [];
     const orders = [];
     for (let key in usersInfo) {
@@ -162,15 +169,31 @@ export const actions = {
       }
       return Object.values(el.order)
     })
-    console.log(preMadeArray.flat())
     const res = preMadeArray.flat().reduce((ac,el) => {
       ac[el.title] = ac[el.title] ? ac[el.title] + el.count : 1;
       return ac;
     },{})
     const resultOrderNames = Object.keys(res);
     const resultOrderCount = Object.values(res);
-    commit('setStaticsOrderNames', resultOrderNames);
-    commit('setStaticsOrderCount', resultOrderCount);
+    commit('setStatisticsOrderNames', resultOrderNames);
+    commit('setStatisticsOrderCount', resultOrderCount);
+  },
+  async getGeneralSettings ({ commit }) {
+    try {
+      const settings = (await firebase.database().ref('/general-settings').once('value')).val() || {};
+      commit('setGeneralSettings', settings);
+    } catch (e) {
+      throw e;
+    }
+  },
+  async setContactsToGeneralSettings ({}, payload) {
+    try {
+      const settings = (await firebase.database().ref('/general-settings').once('value')).val() || {};
+      settings.contacts = payload;
+      await firebase.database().ref('/general-settings').set(settings);
+    } catch (e) {
+      throw e;
+    }
   },
   clearState ({ commit }) {
     commit('clearState');

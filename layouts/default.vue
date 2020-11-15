@@ -42,6 +42,7 @@
       await this.$store.dispatch('user/getUserInfo')
       await this.$store.dispatch('cart/getProducts')
       await this.$store.dispatch('cart/getOrders')
+      await this.$store.dispatch('settings/getGeneralSettings')
       // await this.$store.dispatch('cart/getCartItems');
       // await this.$store.dispatch('cart/getProductsAmount');
     },

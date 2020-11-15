@@ -31,7 +31,7 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link @click="handleRouter('/statics')">
+          <v-list-item link @click="handleRouter('/statistics')">
             <v-list-item-action>
               <v-icon>mdi-chart-pie</v-icon>
             </v-list-item-action>
@@ -41,6 +41,36 @@
               </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
+          <v-expansion-panels
+            v-model="panel"
+            multiple
+          >
+            <v-expansion-panel style="background-color: #8972fc;">
+              <v-expansion-panel-header>Налаштування</v-expansion-panel-header>
+              <v-expansion-panel-content>
+                <v-list-item link @click="handleRouter('/settings/contacts')">
+                  <v-list-item-action>
+                    <v-icon>mdi-account-box</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title style="color: #fff;">
+                      Контакти
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+                <v-list-item link @click="handleRouter('/settings/delivery')">
+                  <v-list-item-action>
+                    <v-icon>mdi-truck-delivery</v-icon>
+                  </v-list-item-action>
+                  <v-list-item-content>
+                    <v-list-item-title style="color: #fff;">
+                      Доставка
+                    </v-list-item-title>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-expansion-panel-content>
+            </v-expansion-panel>
+          </v-expansion-panels>
         </v-list>
       </v-navigation-drawer>
       <v-app-bar
@@ -84,7 +114,8 @@ export default {
   middleware: 'admin',
   data: () => ({
     drawer: null,
-    show: false
+    show: false,
+    panel: false
   }),
   props: {
     source: String
@@ -99,3 +130,11 @@ export default {
   }
 }
 </script>
+
+<style lang="scss">
+  .navbar {
+    .v-expansion-panel-content__wrap {
+      padding: 0 !important;
+    }
+  }
+</style>
